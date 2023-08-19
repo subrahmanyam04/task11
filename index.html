@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="./assets/images/rain1.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+      <link rel="stylesheet" href="./assets/css/main.css">
+    <title>Weather Forecast</title>
+  </head>
+  <body>
+
+
+<div class="row mx-auto mt-5 align-items-center justify-content-center">
+    <div class="col-md-6">
+      <div class="card p-2 car mb-3 align-items-center justify-content-center">
+        <div class="row g-1">
+                <div class="col-md-10">
+                  <input type="text" class="form-control border border-dark rounder-5" placeholder="enter city name" aria-label="city name" id="search">
+                  <span id="error" class="text-danger"></span>
+                </div>
+                <div class="col-md-2">
+                  <button class="btn btn-danger" id="button">search</button>
+                </div>
+        </div>
+              <div id="weather">
+                <img src="./assets/images/1.png" alt="" width="200px" height="200px" class="imag ms-1 me-4 mt-5" id="images">
+                <h1 class="text-center mt-3 ms-1 me-3" id="temp">22</h1>
+                <h2 class="text-center ms-1 me-3" id="city" >newyork</h2>
+              </div>
+         <div class="row g-5 mt-1">
+          <div class="col ms-2">
+            <img src="./assets/images/3-removebg-preview (2).png" alt="" width="100px" height="60px">
+            <h4 class="lh-1 mt-3 " id="humi">50%</h4>
+            <h6 class="lh-1" >Humidity</h6>
+          </div>
+          <div class="col ms-2 mb-3">
+            <img src="./assets/images/6-removebg-preview.png" alt="" width="100px" height="60px">        
+            <h4 class="lh-1 mt-3" id="win">50 kmph</h4>
+            <h6 class="lh-1" >Wind Speed</h6>
+          </div>
+         </div>
+      </div>
+    </div>
+</div>
+
+
+
+<script>
+    
+    //  const apikey ="710e9240730ddd24c9ebfc1b833264d9";
+    //  const apiurl ="https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
+
+    //  const search = document.getElementById('search');
+    //  const button = document.getElementById('button');
+    //  const images = document.getElementById('images');
+
+    //  async function checkweather(city){
+    //   const response = await fetch(apiurl + city + `&appid=${apikey}`);
+    //      console.log(response)
+    //   if(response.status == 404){
+    //     console.log(status)
+    //     document.getElementById('error').innerHTML="enter valid city";
+    //   }else{
+    //     document.getElementById('error').innerHTML=""; 
+    //   }
+
+    //    var data = await response.json();
+                
+    //    console.log(data);
+
+    //    document.getElementById('city').innerHTML= data.name;
+    //    document.getElementById('temp').innerHTML= Math.round(data.main.temp)  + "°C";
+    //    document.getElementById('humi').innerHTML= data.main.humidity + "%";
+    //    document.getElementById('win').innerHTML= Math.round(data.wind.speed) + " kmph";
+
+    //    if(data.weather[0].main == 'Clouds'){
+    //         images.src="./assets/images/cloud1.png"
+    //    }else if(data.weather[0].main == 'Clear'){
+    //     images.src="./assets/images/clear.png"
+    //    }else if(data.weather[0].main == 'Rain'){
+    //     images.src="./assets/images/rain1.png"
+    //    }else if(data.weather[0].main == 'Drizzle'){
+    //     images.src="./assets/images/drizzle1.png"
+    //   }else if(data.weather[0].main == 'Mist'){
+    //     images.src="./assets/images/1.png"
+    //   }
+
+
+    //  }
+
+    //  button.addEventListener("click", function(){
+    //   checkweather(search.value);
+    //  });
+       
+
+
+//  axios
+
+
+    const apikey ="710e9240730ddd24c9ebfc1b833264d9";
+    const apiurl ="https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
+
+     const search = document.getElementById('search');
+     const button = document.getElementById('button');
+     const images = document.getElementById('images');
+
+     async function checkweather(city){
+      try{
+      const response = await axios.get(apiurl + city + `&appid=${apikey}`);
+         console.log(response)
+      if(response.status == 404){
+        console.log(status)
+        document.getElementById('error').innerHTML="enter valid city";
+      }else{
+        document.getElementById('error').innerHTML=""; 
+      }
+
+       var data =  response.data;
+      
+                
+       console.log(data);
+
+       document.getElementById('city').innerHTML= data.name;
+       document.getElementById('temp').innerHTML= Math.round(data.main.temp)  + "°C";
+       document.getElementById('humi').innerHTML= data.main.humidity + "%";
+       document.getElementById('win').innerHTML= Math.round(data.wind.speed) + " kmph";
+
+       if(data.weather[0].main == 'Clouds'){
+            images.src="./assets/images/cloud1.png"
+       }else if(data.weather[0].main == 'Clear'){
+        images.src="./assets/images/clear.png"
+       }else if(data.weather[0].main == 'Rain'){
+        images.src="./assets/images/rain1.png"
+       }else if(data.weather[0].main == 'Drizzle'){
+        images.src="./assets/images/drizzle1.png"
+      }else if(data.weather[0].main == 'Mist'){
+        images.src="./assets/images/1.png"
+      }
+    }catch(error){
+      
+      console.error(error)
+    }
+
+     }
+
+     button.addEventListener("click", function(){
+      checkweather(search.value);
+     });
+
+</script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>   
+  </body>
+</html>
